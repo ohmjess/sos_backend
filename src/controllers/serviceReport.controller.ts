@@ -1,6 +1,7 @@
 // src/controllers/user.controller.ts
 import { Request, Response } from "express";
 import { ServiceReportService } from "../services/serviceReport.service";
+import { sos_service_reports } from "@prisma/client";
 
 export class ServiceReportController {
   static async getServiceReports(req: Request, res: Response) {
@@ -48,6 +49,41 @@ export class ServiceReportController {
       return res.status(200).json(serviceReports);
     } catch (error) {
       console.error("Error fetching serviceReports:", error);
+    }
+  }
+
+  static async createServiceReport(req: Request, res: Response) {
+    try {
+      const serviceReport = await ServiceReportService.createServiceReport(
+        req.body as sos_service_reports
+      );
+      return res.status(201).json(serviceReport);
+    } catch (error) {
+      console.error("Error creating serviceReport:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  static async updateServiceReport(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      const serviceReport = await ServiceReportService.updateServiceReport(
+        id,
+        req.body as sos_service_reports
+      );
+      return res.status(200).json(serviceReport);
+    } catch (error) {
+      console.error("Error updating serviceReport:", error);
+    }
+  }
+
+  static async deleteServiceReport(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      await ServiceReportService.deleteServiceReport(id);
+      return res.status(200).json({ message: "ServiceReport deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting serviceReport:", error);
     }
   }
 }

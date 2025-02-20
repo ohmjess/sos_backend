@@ -1,4 +1,5 @@
 // src/services/user.service.ts
+import { sos_service_reports } from "@prisma/client";
 import { ServiceReportRepository } from "../repositories/serviceReport.repository";
 
 export class ServiceReportService {
@@ -18,5 +19,17 @@ export class ServiceReportService {
 
   static async getRelateServiceReports(id: number) {
     return await ServiceReportRepository.getRelateServiceReports(id);
+  }
+
+  static async createServiceReport(data: sos_service_reports) {
+    return await ServiceReportRepository.createServiceReport(data);
+  }
+
+  static async updateServiceReport(id: number, data: sos_service_reports) {
+    return await ServiceReportRepository.upServiceReport(id,data);
+  }
+
+  static async deleteServiceReport(id: number) {
+    return await ServiceReportRepository.deleteServiceReport(id);
   }
 }

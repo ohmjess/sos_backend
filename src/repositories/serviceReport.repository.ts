@@ -57,6 +57,40 @@ export class ServiceReportRepository {
     id: number
   ): Promise<sos_service_reports | null> {
     const serviceReport = await prisma.sos_service_reports.findUnique({
+      select: {
+        sr_id: true,
+        sr_approver: true,
+        sr_creator: true,
+        sr_project: true,
+        sr_status: true,
+        sr_title: true,
+        sr_type: true,
+        sr_date_approve: true,
+        sr_date_create: true,
+        sr_date_complete: true,
+        sr_date_edit: true,
+        sr_date_report: true,
+        sr_editor: true,
+        sr_menu: true,
+        sr_protection: true,
+        sr_repairer: true,
+        sr_report_detail: true,
+        sr_reporter: true,
+        sr_report_receiver: true,
+        sr_root_cause: true,
+        sr_solution: true,
+        sr_service_report_code: true,
+        type: {
+          select: {
+            typ_name: true,
+          },
+        },
+        project: {
+          select: {
+            proj_name: true,
+          },
+        },
+      },
       where: {
         sr_id: id,
       },
@@ -96,19 +130,14 @@ export class ServiceReportRepository {
         sr_service_report_code: true,
         type: {
           select: {
-            typ_id: true,
             typ_name: true,
-            typ_is_active: true,
-          }
+          },
         },
         project: {
-          select:{
-            proj_id: true,
+          select: {
             proj_name: true,
-            proj_is_active: true,
-            proj_code: true,
-          } 
-        }
+          },
+        },
       },
       where: {
         project: {
@@ -124,5 +153,28 @@ export class ServiceReportRepository {
       throw new Error("serviceReports not found");
     }
     return serviceReports;
+  }
+
+  static async createServiceReport(data: sos_service_reports) {
+    return await prisma.sos_service_reports.create({
+      data: data,
+    })
+  }
+
+  static async upServiceReport(id: number, data: sos_service_reports) {
+    return await prisma.sos_service_reports.update({
+      where: {
+        sr_id: id,
+      },
+      data: data,
+    })
+  }
+
+  static async deleteServiceReport(id: number) {
+    return await prisma.sos_service_reports.delete({
+      where: {
+        sr_id: id,
+      },
+    })
   }
 }

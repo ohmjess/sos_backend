@@ -20,12 +20,33 @@ router.get("/", ServiceReportController.getServiceReports);
  */
 router.get("/:id", ServiceReportController.getServiceReportById);
 
-// /**
-//  * @route   GET /api/serviceReport/user/:id
-//  * @desc    Get reate service user 
-//  * @access  Public
-//  */
+/**
+ * @route   GET /api/serviceReport/user/:id
+ * @desc    Get reate service user 
+ * @access  Public
+ */
 router.get("/user/:id", ServiceReportController.getRelateServiceReport);
+
+/**
+ * @route   GET /api/serviceReport/:id/create
+ * @desc    Create service report
+ * @access  Public
+ */
+router.post("/create", ServiceReportController.createServiceReport);
+
+/**
+ * @route   PUT /api/serviceReport/:id
+ * @desc    Update service report
+ * @access  Public
+ */
+router.put("/:id/update", ServiceReportController.updateServiceReport);
+
+/** 
+ * @route   DELETE /api/serviceReport/:id
+ * @desc    Delete service report
+ * @access  Public
+*/
+router.delete("/:id/delete", ServiceReportController.deleteServiceReport);
 
 
 export const serviceReportRouter = router;
