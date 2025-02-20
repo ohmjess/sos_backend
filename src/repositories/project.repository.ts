@@ -75,11 +75,4 @@ export class ProjectRepository {
     
     return projects;
   }
-
-//   static async getProjectByName(username: string): Promise<sos_projects | null> {
-//     return await prisma.sos_projects.findUnique({
-//       where: {
-//         usr_username: username,
-//     }});
-//   }
 }
