@@ -1,0 +1,93 @@
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model sos_users {
+  usr_id       Int     @id @default(autoincrement())
+  usr_username String  @unique
+  usr_password String
+  usr_email    String  @unique
+  usr_role     Role
+  
+  projects      sos_users_has_projects[]
+  reports       sos_service_reports[] @relation("Reporter")
+  repairs       sos_service_reports[] @relation("Repairer")
+  receivers     sos_service_reports[] @relation("Receiver")
+  editors       sos_service_reports[] @relation("Editor")
+  approvers     sos_service_reports[] @relation("Approver")
+  creators      sos_service_reports[] @relation("Creator")
+}
+
+enum Role {
+  employee
+  user
+}
+
+model sos_projects {
+  proj_id      Int    @id @default(autoincrement())
+  proj_name    String @unique
+  proj_code    String @unique
+  proj_is_active Boolean
+  
+  users        sos_users_has_projects[]
+  reports      sos_service_reports[]
+}
+
+model sos_users_has_projects {
+  uhp_user    Int
+  uhp_project Int
+  
+  user        sos_users @relation(fields: [uhp_user], references: [usr_id], onDelete: Cascade)
+  project     sos_projects @relation(fields: [uhp_project], references: [proj_id], onDelete: Cascade)
+  
+  @@id([uhp_user, uhp_project])
+}
+
+model sos_type {
+  typ_id      Int    @id @default(autoincrement())
+  typ_name    String @unique
+  typ_is_active Boolean
+  typ_order   Int
+  
+  reports     sos_service_reports[]
+}
+
+model sos_service_reports {
+  sr_id                Int      @id @default(autoincrement())
+  sr_title             String   @default("ไม่ระบุ")
+  sr_report_detail     String?
+  sr_date_report       DateTime @default(now())
+  sr_date_create       DateTime @default(now())
+  sr_status            Int
+  sr_service_report_code String? @unique
+  sr_type              Int?
+  sr_project           Int?
+  sr_reporter          Int?
+  sr_repairer          Int?
+  sr_report_receiver   Int?
+  sr_editor            Int?
+  sr_date_edit         DateTime?
+  sr_root_cause        String?
+  sr_solution          String?
+  sr_date_complete     DateTime?
+  sr_approver          Int?
+  sr_menu              String?
+  sr_protection        String?
+  sr_date_approve      DateTime?
+  sr_creator           Int
+  
+  type                 sos_type? @relation(fields: [sr_type], references: [typ_id], onDelete: Restrict)
+  project              sos_projects? @relation(fields: [sr_project], references: [proj_id], onDelete: Restrict)
+  reporter             sos_users? @relation("Reporter", fields: [sr_reporter], references: [usr_id], onDelete: Restrict)
+  repairer             sos_users? @relation("Repairer", fields: [sr_repairer], references: [usr_id], onDelete: Restrict)
+  receiver             sos_users? @relation("Receiver", fields: [sr_report_receiver], references: [usr_id], onDelete: Restrict)
+  editor               sos_users? @relation("Editor", fields: [sr_editor], references: [usr_id], onDelete: Restrict)
+  approver             sos_users? @relation("Approver", fields: [sr_approver], references: [usr_id], onDelete: Restrict)
+  creator              sos_users @relation("Creator", fields: [sr_creator], references: [usr_id], onDelete: Restrict)
+}
