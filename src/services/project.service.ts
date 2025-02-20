@@ -15,5 +15,9 @@ export class ProjectService {
   static async getProjectById(id: number) {
     return await ProjectRepository.getProjectById(id);
   }
+
+  static async getRelatedProjects(id: number) {
+    return await ProjectRepository.getRelativeProjects(id);
+  }
   
 }

@@ -9,7 +9,7 @@ const router = express.Router();
  * @desc    Get all projects
  * @access  Public
  */
-router.get("/", authenticateUser, ProjectController.getProjects);
+router.get("/", ProjectController.getProjects);
 
 /**
  * @route   GET /api/projects/:id
@@ -17,5 +17,12 @@ router.get("/", authenticateUser, ProjectController.getProjects);
  * @access  Public
  */
 router.get("/:id", authenticateUser , ProjectController.getProjects);
+
+/**
+ * @route   GET /api/projects/:Userid
+ * @desc    Get project by Userid
+ * @access  Public
+ */
+router.get("/user/:id" , ProjectController.getRelativeProject);
 
 export const projectRouter = router;

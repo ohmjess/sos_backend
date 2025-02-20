@@ -21,15 +21,27 @@ export class ProjectController {
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }
-  
+
   static async getProjectById(req: Request, res: Response) {
     try {
-      const id = Number(req.params.id); 
+      const id = Number(req.params.id);
 
-      const users = await ProjectService.getProjectById(id);
-      return res.status(200).json(users);
+      const projects = await ProjectService.getProjectById(id);
+      return res.status(200).json(projects);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching projects:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+  }
+
+  static async getRelativeProject(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      console.log(id);
+      const projects = await ProjectService.getRelatedProjects(id);
+      return res.status(200).json(projects);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   }

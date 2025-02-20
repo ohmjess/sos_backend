@@ -63,9 +63,16 @@ export class ProjectRepository {
   static async getRelativeProjects(id: number): Promise<sos_projects[]> {
     const projects = await prisma.sos_projects.findMany({
       where: {
-        
+        users:{
+          some:{
+            uhp_user: id
+          }
+        }
       },
     });
+
+    console.log(projects);
+    
     return projects;
   }
 
