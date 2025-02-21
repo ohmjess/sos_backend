@@ -5,9 +5,15 @@ const prisma = new PrismaClient();
 export class DashboardRepository {
   static async getDashboard(options: {
     id: number;
-    month: number;
-    year: number;
+    month?: string;
+    year?: string;
   }): Promise<any> {
+    const format = {
+      id: options.id,
+      month: options.month ? Number(options.month) : new Date().getMonth() + 1,
+      year: options.year ? Number(options.year) : new Date().getFullYear(),
+    }
+
     const dashboardPerStatus = await prisma.sos_service_reports.groupBy({
       by: ["sr_status"],
       _count: {
@@ -15,10 +21,10 @@ export class DashboardRepository {
       },
       where: {
         sr_project: {
-          in: options.id
+          in: format.id
             ? (
                 await prisma.sos_users_has_projects.findMany({
-                  where: { uhp_user: options.id },
+                  where: { uhp_user: format.id },
                   select: { uhp_project: true },
                 })
               ).map((p) => p.uhp_project)
@@ -26,13 +32,9 @@ export class DashboardRepository {
         },
         sr_date_report: {
           gte:
-            options.month && options.year
-              ? new Date(options.year, options.month - 1, 1)
-              : undefined,
+              new Date(format.year, format.month - 1, 1),
           lt:
-            options.month && options.year
-              ? new Date(options.year, options.month, 1)
-              : undefined,
+              new Date(format.year, format.month, 1),
         },
       },
     });
