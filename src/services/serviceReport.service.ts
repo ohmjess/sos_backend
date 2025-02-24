@@ -11,6 +11,8 @@ export class ServiceReportService {
     search?: string;
     role?: string;
   }) {
+    console.log("Log from service");
+    
     return await ServiceReportRepository.getServiceReports(options);
   }
   static async getServiceReportById(id: number) {

@@ -14,6 +14,8 @@ export class ServiceReportRepository {
     data: sos_service_reports[];
     meta: { page: number; pageSize: number; total: number };
   }> {
+    console.log("Log from repository");
+
     const {
       page = 1,
       pageSize = 10,
@@ -21,6 +23,9 @@ export class ServiceReportRepository {
       sortOrder = "asc",
       search = "",
     } = options;
+
+    console.log("page", page);
+    
 
     const skip = (page - 1) * pageSize;
 

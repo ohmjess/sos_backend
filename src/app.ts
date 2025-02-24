@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 });
 
 // Global error handler
-app.use((err: any, req, res, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   res.status(500).json({
     message: "Something went wrong",

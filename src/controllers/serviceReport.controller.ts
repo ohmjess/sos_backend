@@ -6,6 +6,8 @@ import { sos_service_reports } from "@prisma/client";
 export class ServiceReportController {
   static async getServiceReports(req: Request, res: Response) {
     try {
+      console.log("Log from controller");
+      
       const options = {
         page: req.query.page ? Number(req.query.page) : undefined,
         pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
