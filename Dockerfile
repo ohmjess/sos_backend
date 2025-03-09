@@ -13,13 +13,9 @@ RUN npm ci
 # Copy the rest of the application files (including prisma schema)
 COPY . .
 
-# Generate Prisma client
-RUN npx prisma generate
+RUN npm run prisma:generate
 
 RUN mv ./prisma ./src
-
-# Build TypeScript code
-RUN npm run build
 
 # Stage 2: Production image
 FROM node:22 AS production
@@ -34,12 +30,12 @@ COPY --from=build /app/src/prisma ./prisma
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/.env ./.env
 
-# Use a non-root user for security
-RUN addgroup --system app && adduser --system --ingroup app app
-USER app
+# # Use a non-root user for security
+# RUN addgroup --system app && adduser --system --ingroup app app
+# USER app
 
 # Expose the port
 EXPOSE 3000
 
-# Run the application
+# # Run the application
 CMD ["node", "dist/server.js"]
