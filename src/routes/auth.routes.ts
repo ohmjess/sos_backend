@@ -7,10 +7,38 @@ import { userSchema } from "../utils/validators/auth.validator";
 const router = express.Router();
 
 /**
- * @route   GET /api/auth/
- * @desc    login user by username and password
- * @access  Public
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     description: Log in with username and password
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *             required:
+ *               - username
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Successfully logged in
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       400:
+ *         description: Invalid username or password
  */
-router.post("/login", validateRequest(userSchema) , AuthController.login);
+router.post("/login", validateRequest(userSchema), AuthController.login);
 
 export const authRouter = router;   

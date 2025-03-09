@@ -16,7 +16,7 @@ router.get("/", ProjectController.getProjects);
  * @desc    Get project by id
  * @access  Public
  */
-router.get("/:id", authenticateUser , ProjectController.getProjects);
+router.get("/:id" , ProjectController.getProjects);
 
 /**
  * @route   GET /api/projects/:Userid
