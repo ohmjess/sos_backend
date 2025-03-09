@@ -1,7 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import helmet from "helmet";
+// import helmet from "helmet";
 import morgan from "morgan";
 import { envConfig } from "./config/config";
 import prisma, { connectPrisma, disconnectPrisma } from "./prisma"; // ใช้ Prisma จาก prisma.ts
@@ -23,7 +23,7 @@ const corsOptions = {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(helmet());
+// app.use(helmet());
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 
 // Routes
@@ -56,7 +56,7 @@ process.on("SIGTERM", gracefulShutdown);
 
 // Start server
 connectPrisma().then(() => {
-  app.listen(envConfig.appPort || 3000, () => {
+  app.listen(envConfig.appPort || 3000 , () => {
     console.log(`[INFO] Server running on port http://localhost:${envConfig.appPort}`);
   });
 });
