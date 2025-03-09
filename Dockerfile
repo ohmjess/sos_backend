@@ -17,6 +17,8 @@ RUN npm run prisma:generate
 
 RUN mv ./prisma ./src
 
+RUN npm run build
+
 # Stage 2: Production image
 FROM node:22 AS production
 
