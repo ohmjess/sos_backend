@@ -9,14 +9,14 @@ const swaggerOptions = {
       version: '1.0.0',
       description: 'API Documentation for my Express project',
     },
-    // servers: [
-    //   {
-    //     url: 'http://100.104.17.32:5000', // เปลี่ยนเป็น URL ของ backend API ของคุณ
-    //     description: 'Local server',
-    //   },
-    // ],
+    servers: [
+      {
+        url: 'http://server.bsospace.com:8001', // เปลี่ยนเป็น URL ของ backend API ของคุณ
+        description: 'Local server',
+      },
+    ],
   },
-  apis: ['./src/routes/*.ts'], // ค้นหาไฟล์ .ts ทุกไฟล์ในโฟลเดอร์ routes
+  apis: [`${__dirname}/routes/*.js`], // ค้นหาไฟล์ .ts ทุกไฟล์ในโฟลเดอร์ routes
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
