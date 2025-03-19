@@ -8,6 +8,24 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Auth:
+ *       type: object
+ *       required:
+ *         - username
+ *         - password
+ *       properties:
+ *         username:
+ *           type: string
+ *           description: The user's username
+ *         password:
+ *           type: string
+ *           description: The user's password
+ */
+
+/**
+ * @swagger
  * /api/auth/login:
  *   post:
  *     description: Log in with username and password

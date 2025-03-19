@@ -16,6 +16,8 @@ const router = express.Router();
  *         - usr_id
  *         - usr_username
  *         - usr_email
+ *         - usr_password
+ *         - usr_role
  *       properties:
  *         usr_id:
  *           type: integer
@@ -26,6 +28,12 @@ const router = express.Router();
  *         usr_email:
  *           type: string
  *           description: The user's email address
+ *         usr_password:
+ *           type: string
+ *           description: The user's password
+ *         usr_role:
+ *           type: string
+ *           description: The user's role
  */
 
 /**

@@ -14,6 +14,8 @@ const router = express.Router();
  *       required:
  *         - typ_id
  *         - typ_name
+ *         - typ_is_active
+ *         - typ_order
  *       properties:
  *         typ_id:
  *           type: integer
@@ -21,6 +23,12 @@ const router = express.Router();
  *         typ_name:
  *           type: string
  *           description: The name of the type
+ *         typ_is_active:
+ *           type: boolean
+ *           description: The status of the type
+ *         typ_order:
+ *           type: boolean
+ *           description: The order of the type
  */
 
 /**

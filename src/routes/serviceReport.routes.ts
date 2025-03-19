@@ -5,6 +5,94 @@ import { authenticateUser } from "../middlewares/auth.middleware";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ServiceReport:
+ *       type: object
+ *       required:
+ *         - sr_id
+ *         - sr_title
+ *         - sr_report_detail
+ *         - sr_date_report
+ *         - sr_date_create
+ *         - sr_date_edit
+ *         - sr_status
+ *         - sr_service_report_code
+ *         - sr_creator
+ *         - sr_editor
+ *         - sr_reporter
+ *         - sr_type
+ *         - sr_project
+ *       properties:
+ *         sr_id:
+ *           type: integer
+ *           description: The service report's unique ID
+ *         sr_title:
+ *           type: string
+ *           description: The title of the service report
+ *         sr_report_detail:
+ *           type: string
+ *           description: The details of the service report
+ *         sr_date_report:
+ *           type: string
+ *           description: The date of the service report
+ *         sr_date_create:
+ *           type: string
+ *           description: The date when the service report was created
+ *         sr_date_edit:
+ *           type: string
+ *           description: The date when the service report was last edited
+ *         sr_status:
+ *           type: integer
+ *           description: The status of the service report
+ *         sr_service_report_code:
+ *           type: string
+ *           description: The code of the service report
+ *         sr_creator:
+ *           type: integer
+ *           description: The ID of the user who created the service report
+ *         sr_editor:
+ *           type: integer
+ *           description: The ID of the user who last edited the service report
+ *         sr_reporter:
+ *           type: integer
+ *           description: The ID of the user who reported the issue
+ *         sr_project:
+ *           type: integer
+ *           description: The ID of the project of the service report
+ *         sr_type:
+ *           type: integer
+ *           description: The ID of the type of the service report
+ *         sr_repairer:
+ *           type: integer
+ *           description: The ID of the repairer of the service report
+ *         sr_report_receiver:
+ *           type: integer
+ *           description: The ID of the report receiver of the service report
+ *         sr_root_cause:
+ *           type: string
+ *           description: The root cause of the service report
+ *         sr_solution:
+ *           type: string
+ *           description: The solution of the service report
+ *         sr_date_complete:
+ *           type: string
+ *           description: The date when the service report was completed
+ *         sr_approver:
+ *           type: integer
+ *           description: The ID of the approver of the service report
+ *         sr_menu:
+ *           type: string
+ *           description: The menu of the service report
+ *         sr_protection:
+ *           type: string
+ *           description: The protection of the service report
+ *         sr_date_approve:
+ *           type: string
+ *           description: The date when the service report was approved
+ */
 
 /**
  * @swagger
@@ -19,6 +107,42 @@ const router = express.Router();
  *   get:
  *     summary: Get all Service Reports
  *     tags: [Service Reports]
+ *     parameters:
+ *       - name: page
+ *         in: query
+ *         description: Page number
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - name: pageSize
+ *         in: query
+ *         description: Number of service report per page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *       - name: sortBy
+ *         in: query
+ *         description: Field to sort by
+ *         required: false
+ *         schema:
+ *           type: string
+ *           default: sr_id
+ *       - name: sortOrder
+ *         in: query
+ *         description: Sorting order (asc or desc)
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           default: asc
+ *       - name: search
+ *         in: query
+ *         description: Search query for service report name or service report code
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: รายการของ Service Reports
@@ -82,16 +206,51 @@ router.get("/user/:id", ServiceReportController.getRelateServiceReport);
  *             properties:
  *               sr_title:
  *                 type: string
+ *                 description: Title of the service report
  *               sr_service_report_code:
  *                 type: string
- *               sr_status:
+ *                 description: Service report code
+ *               sr_report_detail:
  *                 type: string
+ *                 description: Detailed description of the report
+ *               sr_date_report:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Report date (ISO 8601 format)
+ *               sr_date_create:
+ *                 type: string
+ *                 format: date-time
+ *                 description: Creation date (ISO 8601 format)
+ *               sr_date_edit:
+ *                 type: string
+ *                 format: date-time
+ *                 nullable: true
+ *                 description: Last edit date (ISO 8601 format, nullable)
+ *               sr_status:
+ *                 type: integer
+ *                 description: Status of the report (e.g., 1 = active, 0 = inactive)
+ *               sr_creator:
+ *                 type: integer
+ *                 description: ID of the user who created the report
+ *               sr_editor:
+ *                 type: integer
+ *                 description: ID of the last user who edited the report
+ *               sr_reporter:
+ *                 type: integer
+ *                 description: ID of the user who reported the issue
+ *               sr_type:
+ *                 type: integer
+ *                 description: ID of the type of the report
+ *               sr_project:
+ *                 type: integer
+ *                 description: ID of the project of the report
  *     responses:
  *       201:
- *         description: สร้างสำเร็จ
+ *         description: Service report created successfully
  *       400:
- *         description: ข้อมูลไม่ถูกต้อง
+ *         description: Invalid request data
  */
+
 router.post("/create", ServiceReportController.createServiceReport);
 
 /**
