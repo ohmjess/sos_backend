@@ -71,8 +71,6 @@ export class ProjectRepository {
       },
     });
 
-    console.log(projects);
-    
     return projects;
   }
 }
