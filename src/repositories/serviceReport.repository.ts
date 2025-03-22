@@ -95,6 +95,31 @@ export class ServiceReportRepository {
             proj_name: true,
           },
         },
+        editor: {
+          select: {
+            usr_username: true,
+          }
+        },
+        reporter: {
+          select: {
+            usr_username: true,
+          }
+        },
+        approver: {
+          select: {
+            usr_username: true,
+          }
+        },
+        repairer: {
+          select: {
+            usr_username: true,
+          }
+        },
+        receiver: {
+          select: {
+            usr_username: true,
+          }
+        },
       },
       where: {
         sr_id: id,
@@ -142,31 +167,6 @@ export class ServiceReportRepository {
           select: {
             proj_name: true,
           },
-        },
-        editor: {
-          select: {
-            usr_username: true,
-          }
-        },
-        reporter: {
-          select: {
-            usr_username: true,
-          }
-        },
-        approver: {
-          select: {
-            usr_username: true,
-          }
-        },
-        repairer: {
-          select: {
-            usr_username: true,
-          }
-        },
-        receiver: {
-          select: {
-            usr_username: true,
-          }
         },
       },
       where: {
