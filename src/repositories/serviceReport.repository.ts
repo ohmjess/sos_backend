@@ -143,6 +143,31 @@ export class ServiceReportRepository {
             proj_name: true,
           },
         },
+        editor: {
+          select: {
+            usr_username: true,
+          }
+        },
+        reporter: {
+          select: {
+            usr_username: true,
+          }
+        },
+        approver: {
+          select: {
+            usr_username: true,
+          }
+        },
+        repairer: {
+          select: {
+            usr_username: true,
+          }
+        },
+        receiver: {
+          select: {
+            usr_username: true,
+          }
+        },
       },
       where: {
         project: {
