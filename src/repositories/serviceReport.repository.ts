@@ -170,13 +170,20 @@ export class ServiceReportRepository {
         },
       },
       where: {
-        project: {
-          users: {
-            some: {
-              uhp_user: id,
+        OR: [
+          {
+            project: {
+              users: {
+                some: {
+                  uhp_user: id,
+                },
+              },
             },
           },
-        },
+          {
+            sr_creator: id,
+          },
+        ],
       },
     });
     if (!serviceReports) {
