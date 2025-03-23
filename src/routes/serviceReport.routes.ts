@@ -2,7 +2,6 @@ import express from "express";
 import { ServiceReportController } from "../controllers/serviceReport.controller";
 import { authenticateUser } from "../middlewares/auth.middleware";
 
-
 const router = express.Router();
 
 /**
@@ -183,11 +182,62 @@ router.get("/:id", ServiceReportController.getServiceReportById);
  *         schema:
  *           type: integer
  *         description: ID ของผู้ใช้
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           example: 1
+ *         description: หน้าของข้อมูลที่ต้องการ (pagination)
+ *       - in: query
+ *         name: pageSize
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *         description: จำนวนรายการต่อหน้า
+ *       - in: query
+ *         name: sortBy
+ *         schema:
+ *           type: string
+ *           example: sr_title
+ *         description: ชื่อ field ที่ต้องการใช้เรียงลำดับ
+ *       - in: query
+ *         name: sortOrder
+ *         schema:
+ *           type: string
+ *           enum: [asc, desc]
+ *           example: asc
+ *         description: ทิศทางการเรียงลำดับ (asc หรือ desc)
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *           example: printer
+ *         description: คำค้นหาในชื่อหรือรหัสรายงาน
  *     responses:
  *       200:
  *         description: รายการของ Service Reports ที่เกี่ยวข้องกับผู้ใช้
- *       404:
- *         description: ไม่พบข้อมูล
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/ServiceReport'
+ *                 meta:
+ *                   type: object
+ *                   properties:
+ *                     page:
+ *                       type: integer
+ *                     pageSize:
+ *                       type: integer
+ *                     total:
+ *                       type: integer
+ *       400:
+ *         description: Invalid user ID
+ *       500:
+ *         description: Internal server error
  */
 router.get("/user/:id", ServiceReportController.getRelateServiceReport);
 
@@ -306,6 +356,4 @@ router.put("/:id/update", ServiceReportController.updateServiceReport);
  */
 router.delete("/:id/delete", ServiceReportController.deleteServiceReport);
 
-
 export const serviceReportRouter = router;
-

@@ -7,7 +7,7 @@ export class ServiceReportController {
   static async getServiceReports(req: Request, res: Response) {
     try {
       console.log("Log from controller");
-      
+
       const options = {
         page: req.query.page ? Number(req.query.page) : undefined,
         pageSize: req.query.pageSize ? Number(req.query.pageSize) : undefined,
@@ -44,13 +44,33 @@ export class ServiceReportController {
   static async getRelateServiceReport(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+      }
+
+      const page = req.query.page ? Number(req.query.page) : undefined;
+      const pageSize = req.query.pageSize
+        ? Number(req.query.pageSize)
+        : undefined;
+      const sortBy = req.query.sortBy?.toString();
+      const sortOrder = req.query.sortOrder?.toString();
+      const search = req.query.search?.toString();
 
       const serviceReports = await ServiceReportService.getRelateServiceReports(
-        id
+        {
+          id,
+          page,
+          pageSize,
+          sortBy,
+          sortOrder,
+          search,
+        }
       );
+
       return res.status(200).json(serviceReports);
     } catch (error) {
       console.error("Error fetching serviceReports:", error);
+      return res.status(500).json({ message: "Internal server error" });
     }
   }
 
@@ -83,7 +103,9 @@ export class ServiceReportController {
     try {
       const id = Number(req.params.id);
       await ServiceReportService.deleteServiceReport(id);
-      return res.status(200).json({ message: "ServiceReport deleted successfully" });
+      return res
+        .status(200)
+        .json({ message: "ServiceReport deleted successfully" });
     } catch (error) {
       console.error("Error deleting serviceReport:", error);
     }

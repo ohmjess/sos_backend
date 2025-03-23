@@ -25,7 +25,6 @@ export class ServiceReportRepository {
     } = options;
 
     console.log("page", page);
-    
 
     const skip = (page - 1) * pageSize;
 
@@ -98,27 +97,27 @@ export class ServiceReportRepository {
         editor: {
           select: {
             usr_username: true,
-          }
+          },
         },
         reporter: {
           select: {
             usr_username: true,
-          }
+          },
         },
         approver: {
           select: {
             usr_username: true,
-          }
+          },
         },
         repairer: {
           select: {
             usr_username: true,
-          }
+          },
         },
         receiver: {
           select: {
             usr_username: true,
-          }
+          },
         },
       },
       where: {
@@ -131,9 +130,28 @@ export class ServiceReportRepository {
     return serviceReport;
   }
 
-  static async getRelateServiceReports(
-    id: number
-  ): Promise<sos_service_reports[] | null> {
+  static async getRelateServiceReports(options: {
+    id: number;
+    page?: number;
+    pageSize?: number;
+    sortBy?: string;
+    sortOrder?: string;
+    search?: string;
+  }): Promise<{
+    data: sos_service_reports[];
+    meta: { page: number; pageSize: number; total: number };
+  }> {
+    const {
+      id,
+      page = 1,
+      pageSize = 10,
+      sortBy = "sr_id",
+      sortOrder = "asc",
+      search = "",
+    } = options;
+
+    const skip = (page - 1) * pageSize;
+
     const serviceReports = await prisma.sos_service_reports.findMany({
       select: {
         sr_id: true,
@@ -185,17 +203,44 @@ export class ServiceReportRepository {
           },
         ],
       },
+      skip,
+      take: pageSize,
+      orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
     });
-    if (!serviceReports) {
-      throw new Error("serviceReports not found");
-    }
-    return serviceReports;
+
+    const total = await prisma.sos_service_reports.count({
+      where: {
+        OR: [
+          {
+            project: {
+              users: {
+                some: {
+                  uhp_user: id,
+                },
+              },
+            },
+          },
+          {
+            sr_creator: id,
+          },
+        ],
+      },
+    });
+
+    return {
+      data: serviceReports,
+      meta: {
+        page,
+        pageSize,
+        total,
+      },
+    };
   }
 
   static async createServiceReport(data: sos_service_reports) {
     return await prisma.sos_service_reports.create({
       data: data,
-    })
+    });
   }
 
   static async upServiceReport(id: number, data: sos_service_reports) {
@@ -204,7 +249,7 @@ export class ServiceReportRepository {
         sr_id: id,
       },
       data: data,
-    })
+    });
   }
 
   static async deleteServiceReport(id: number) {
@@ -212,6 +257,6 @@ export class ServiceReportRepository {
       where: {
         sr_id: id,
       },
-    })
+    });
   }
 }
